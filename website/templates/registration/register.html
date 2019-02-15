@@ -1,0 +1,26 @@
+{% extends 'home/base.html' %}
+
+{% load staticfiles %}
+
+{% block body_block %}
+  <div class="container">
+    <div class="jumbotron">
+      {% if registered %}
+        <h3>ممنون از اینکه در استاتوس ثبت نام کردید</h3>
+      {% else %}
+        <h3>برای ثبت نام فیلدهای زیر را به دقت پر کنید</h3>
+
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+          {{ user_form.as_p }}
+          {{ profile_form.as_p }}
+          <input type="submit" name="" value="ثبت نام">
+        </form>
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+{% endblock %}

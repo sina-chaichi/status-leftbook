@@ -1,0 +1,65 @@
+{% extends 'home/base.html' %}
+{% load staticfiles %}
+
+{% block body_block %}
+
+<div class="centerstagte">
+
+  {% if user.is_authenticated %}
+
+  {% for post in post_list %}
+    <div class="container post">
+      <h4><a href="{% url 'post_detail' pk=post.pk %}">{{post.author}} نوشته است</a></h4>
+
+      <div class="date">
+        <p>{{ post.posted_at|date:'D M Y' }} در تاریخ</p>
+      </div>
+
+      <div class="jumbotron post p-3">
+        <div class="row">
+
+          <div class="col-lg-10">
+            <blockquote class="blockquote">
+              <i class="fa fa-quote-left" aria-hidden="true"></i>
+              <span class='post-text'>{{ post.text|safe|linebreaksbr }}</span>
+              <i class="fa fa-quote-right" aria-hidden="true"></i>
+            </blockquote>
+          </div>
+
+          <div class="like-content">
+            <button class="btn-secondary like-review">
+              <i class="fa fa-heart" aria-hidden="true"></i> Like
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <div>
+        <p>تعداد {{post.approve_comments.count}} نفر زیر این پست نظر داده اند</p>
+        <p>تعداد {{post.approve_likes.count}} نفر این پست را لایک کرده اند</p>
+
+      </div>
+    </div>
+  {% endfor %}
+
+  {% else %}
+    <p></p>
+  {% endif %}
+
+
+</div>
+
+{% block javascripts %}
+{{ block.super }}
+{% load static %}
+<script src="{% static 'js/status.js' %}"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    status.init()
+  })
+</script>
+
+{% endblock %}
+
+{% endblock %}
