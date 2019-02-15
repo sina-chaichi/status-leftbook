@@ -3,7 +3,9 @@
 
 {% block body_block %}
 
-<h3>Status by {{post.author}}</h3>
+{% if user.is_authenticated %}
+
+<h3>{{post.author}}</h3>
   {% if post.posted_at %}
 
     <div class="postdate date">
@@ -12,7 +14,7 @@
 
   {% else %}
 
-    <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+    <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">منتشر کن</a>
 
   {% endif %}
 
@@ -25,32 +27,43 @@
             <span class='post-text'>{{ post.text|safe|linebreaksbr }}</span>
             <i class="fa fa-quote-right" aria-hidden="true"></i>
           </blockquote>
+
+          <div class="like-content">
+
+            <a class="btn btn-primary" href="#">
+              <span class="glyphicon glyphicon-comment">لایک</span></a>
+
+            <a class="btn btn-primary" href="{% url 'add_comment' pk=post.pk %}">
+              <span class="glyphicon glyphicon-comment">نظر دهید</span></a>
+          </div>
+
         </div>
 
-        <div class="like-content">
-          <button class="btn-secondary like-review">
-            <i class="fa fa-heart" aria-hidden="true"></i> Like
-          </button>
+
+
+
+          </div>
         </div>
 
-        {% if user.is_authenticated %}
-            {% if user == post.author %}
-              <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}">
-                <span class="glyphicon glyphicon-pencil">ویرایش</span>
-              </a>
+        {% if user == post.author %}
 
-              <br>
+          <div class="container">
 
-              <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}">
-                <span class="glyphicon glyphicon-remove">حذف</span>
-              </a>
-            {% endif %}
-              <hr>
-              <a class="btn btn-primary btn-comment" href="{% url 'add_comment' pk=post.pk %}">Add Comment</a>
-          {% endif %}
-      </div>
-    </div>
+            <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}">
+              <span class="glyphicon glyphicon-pencil">ویرایش</span></a>
 
+            <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}">
+              <span class="glyphicon glyphicon-remove">حذف</span></a>
+
+          </div>
+        {% endif %}
+
+{% endif %}
+
+
+<p></p>
+<p></p>
+<p></p>
 
 
 <div class="container">
@@ -70,6 +83,7 @@
         </a>
 
         {% endif %}
+
       <p>{{ comment.text|safe|linebreaks }}</p>
     {% endif %}
 
